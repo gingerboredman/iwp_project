@@ -1,0 +1,25 @@
+.navbar-custom {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+    background-color: #212121;
+
+    color: white;
+    /* the rest of your styling */
+}
+
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: #c5c6c7 ;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+    color: #c5c6c7 ;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #c5c6c7 ;
+}
+

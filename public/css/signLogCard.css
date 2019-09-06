@@ -1,0 +1,11 @@
+.card{
+    width: 30em; 
+    margin-left:38%; 
+    margin-right:38%;
+    margin-top: 10em;
+    border-radius: 1em;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color:  #1f2833 ;color: #c5c6c7 ;
+    
+}
