@@ -49,13 +49,23 @@ router.patch('/services/:id', async (req,res) => {
     }
 
     try{
-        const service = await Service.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true})
+        // // console.log(req.params.id)
+        const service = await Service.findById(req.params.id)
+
+        
+        // // const service = await Service.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true})
 
         if(!service){
             return res.status(404).send()
         }
+
+        updates.forEach((update) => service[update] = req.body[update])
+        
+        await service.save()
+
         res.send(service)
     } catch(e){
+        // console.log(e)
         res.status(400).send(e)
     }
 })

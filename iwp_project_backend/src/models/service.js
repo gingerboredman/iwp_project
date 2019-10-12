@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
+// const serviceSchema = new mongoose.Schema()
+
 const Service = mongoose.model('Service', {
     serviceType:{
         type: String,
@@ -18,7 +20,7 @@ const Service = mongoose.model('Service', {
         required: true,
         uppercase:true,
         validate(value){
-            console.log(!(value.length === 1) || !(value.match(/[A-Za-z]/i)))
+            // console.log(!(value.length === 1) || !(value.match(/[A-Za-z]/i)))
             if(!(value.length === 1) || !(value.match(/[A-Za-z]/i))){
                 throw new Error('Block should be a single character')
             }
