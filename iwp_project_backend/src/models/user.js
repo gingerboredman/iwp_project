@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Service = require('./service')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -47,6 +48,23 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.virtual('services', {
+    ref:'Service',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
+
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString()}, 'aaa')
@@ -81,6 +99,12 @@ userSchema.pre('save', async function (next) {
         user.password = await bcrypt.hash(user.password, 8)
     }
     next()
+})
+
+// Delete user service when user is removed
+userSchema.pre('remove', async function (next) {
+    const user = this
+    await Service.deleteMany({owner: user._id})
 })
 
 const User = mongoose.model('User', userSchema)

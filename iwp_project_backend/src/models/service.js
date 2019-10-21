@@ -37,6 +37,11 @@ const Service = mongoose.model('Service', {
         required: true,
         default:false
 
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref:'User'
     }
 })
 

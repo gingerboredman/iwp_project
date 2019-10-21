@@ -1,9 +1,14 @@
 const express = require('express')
 const Service = require('../models/service')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
-router.post('/services', async (req,res) => {
-    const service = new Service(req.body)
+router.post('/services', auth, async (req,res) => {
+    // const service = new Service(req.body)
+    const service = new Service({
+        ...req.body,
+        owner: req.user._id
+    })
 
     try{
         await service.save(201)
@@ -15,21 +20,25 @@ router.post('/services', async (req,res) => {
 
 
 
-router.get('/services', async (req,res) => {
+router.get('/services', auth, async (req,res) => {
 
     try{
-        const services = await Service.find({})
-        res.send(services)
+        // const services = await Service.find({owner: req.user._id})
+        await req.user.populate('services').execPopulate()
+
+        res.send(req.user.services)
     } catch(e){
         res.status(500).send()
     }
 })
 
-router.get('/services/:id', async (req,res) => {
+router.get('/services/:id', auth, async (req,res) => {
     const _id = req.params.id
 
     try{
-        const service = await Service.findById(_id)
+        //const service = await Service.findById(_id)
+
+        const service = await Service.findOne({_id, owner: req.user._id})
         if(!service) {
             return res.status(404).send()
         }
@@ -39,7 +48,7 @@ router.get('/services/:id', async (req,res) => {
     }
 })
 
-router.patch('/services/:id', async (req,res) => {
+router.patch('/services/:id', auth, async (req,res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['completed']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -49,8 +58,9 @@ router.patch('/services/:id', async (req,res) => {
     }
 
     try{
+        const service = await Service.findOne({_id:req.params.id, owner: req.user._id})
         // // console.log(req.params.id)
-        const service = await Service.findById(req.params.id)
+        // const service = await Service.findById(req.params.id)
 
         
         // // const service = await Service.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true})
@@ -70,10 +80,9 @@ router.patch('/services/:id', async (req,res) => {
     }
 })
 
-router.delete('/services/:id', async (req,res) => {
+router.delete('/services/:id', auth, async (req,res) => {
     try{
-        const service = await Service.findByIdAndDelete(req.params.id)
-
+        const service = await Service.findOneAndDelete({_id:req.params.id, owner: req.user._id})
         if(!service){
             return res.status(404).send()
         }
