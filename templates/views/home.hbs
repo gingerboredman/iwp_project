@@ -19,6 +19,41 @@
     -webkit-overflow-scrolling: touch;
 }
     </style>
+
+    <script>
+        async function getServices(){
+            const url = '/services'
+            const token = sessionStorage.getItem('token')
+            
+                const response = await fetch(url, {
+                method: 'GET', // or '
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+token
+                }
+            });
+            if(response.ok){
+                const json = await response.json()
+                console.log(json)
+                
+                    for(i = json.length - 1; i>=0; --i)
+                    {
+                        tag = 'c'+i
+                        newItem = document.createElement("LI")
+                        newItem.setAttribute("class", "list-group-item")
+                        newItem.setAttribute("id", tag)
+                        document.getElementById('complaintsList').appendChild(newItem)
+                        document.getElementById(tag).innerHTML = json[i]['description']
+                    }
+                
+            }
+            else if (response.status = 401)
+                window.location.pathname = "/signin"
+            }
+        
+
+        window.addEventListener('load', () => getServices())
+    </script>
 </head>
 <body>
     {{>login_nav}}
@@ -41,35 +76,17 @@
                     <div class="card " style="width: 70rem; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
                         <div class="card-body">
                             <p class="card-text">
-                                <div class="panel panel-primary" id="result_panel">
-                                    <div class="panel-heading"><h3 class="panel-title">Complaints</h3>
+                                <div class="panel panel-primary" id="complaints">
+                                    <div class="panel-heading"><h3 class="panel-title">Service requests</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <ul class="list-group">
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            <li class="list-group-item"><strong>Signature
-                                                Accommodations</strong>(1480m)
-                                            </li>
-                                            
+                                        <ul class="list-group" id="complaintsList">
+                                                                                 
                                         </ul>
                                     </div>
                                 </div>
                             </p>
-                            <a href="#" class="btn btn-primary">View All</a>
+                            <a href="/complaints" class="btn btn-primary">View All</a>
                         </div>
                     </div>
 

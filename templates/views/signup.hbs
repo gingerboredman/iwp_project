@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/navbar.css">
+    <script src="/js/utils.js"></script>
+
+    
+    <script>
+        
+        
+        
+
+        async function register()
+        {
+            console.log('asdadas')
+            const url = 'http://localhost:3000/users/register'
+            const name = document.getElementById('name').value
+            const email = document.getElementById('email').value
+            const regNo = document.getElementById('regNo').value
+            const password = document.getElementById('password').value
+            const rePassword = document.getElementById('rePassword').value
+
+            const data = {name, email, regNo, password}
+
+            eq = await equal(password,rePassword)
+            if(!eq){
+                document.getElementById('passHelp').innerHTML = "Passwords do not match"
+            } else{
+                
+                try {
+                const response = await fetch(url, {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify(data), // data can be `string` or {object}!
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                });
+                
+
+                if(response.ok){
+                    const json = await response.json();
+                    
+                    sessionStorage.setItem("token", json['token']);
+
+                }else{
+                    throw Error('Status not OK')
+                }
+                } catch (error) {
+                    console.error(error);
+                    document.getElementById("passHelp").innerHTML = "That didn't work out. Please try again."
+                }
+                    
+            }
+        }
+
+
+        function addListener() {
+            document.getElementById("register").addEventListener("click", () => register(), false)
+        }
+                    
+        window.addEventListener('load', () => addListener(), false)
+    </script>
+
+</head>
+<body>
+    {{>no_login_nav}}
+
+    <div class="container-fluid justify-content-center" style="margin-top: 20vh;">
+    <div class="row justify-content-center" >
+
+        <div class="card" style="width: 25rem; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+            <div class="card-body">
+                <h5 class="card-title text-center">Sign up</h5>
+
+
+                <form method="post" id="reg">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="email" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="regNo">Registration No.</label>
+                        <input type="text" class="form-control" id="regNo" aria-describedby="emailHelp" placeholder="Enter Reg. No.">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
+                   <div class="form-group">
+                        <label for="rePassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="rePassword" placeholder="Re-enter Password">
+                         <small id="passHelp" class="form-text" style="color:red">.</small>
+
+                    </div>
+                    <div class="col text-center">
+                    <button type="button" class="btn btn-primary" id="register">Sign up</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>   
+    </div>
+</div>
+
+   
+</body>
+</html>

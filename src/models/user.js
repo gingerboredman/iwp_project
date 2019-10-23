@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Service = require('./service')
+const Order = require('./order')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -50,6 +51,12 @@ const userSchema = new mongoose.Schema({
 
 userSchema.virtual('services', {
     ref:'Service',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.virtual('orders', {
+    ref:'Order',
     localField: '_id',
     foreignField: 'owner'
 })

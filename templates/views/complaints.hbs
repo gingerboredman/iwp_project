@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/navbar.css">
+    <script src="/js/utils.js"></script>
+    <script src="/js/complaints.js"></script>
+
+    <script
+
+</head>
+<body>
+    {{>login_nav}}
+<section class="mt-auto">
+    <div class="container-fluid justify-content-center">
+        <div class="row justify-content-center">
+            <h2 style="margin-top:10vh">Complaints</h2>
+            <table class="table" style="margin-top:1rem; margin-left:2rem; margin-right:2rem">
+                <thead class="thead" style="background-color: #212121; color:white">
+                    <tr>
+                        <th>S. No.</th>
+                        <th>Service Type</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="complaintsBody">
+                    
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Request</button>
+            
+
+            <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title">Modal Header</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="reg">
+                    <div class="form-group">
+                        <label for="type">Service Type:</label>
+                        <select required class="form-control" id="type">
+                            <option value="" disabled selected hidden>Select Type</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="AC">AC</option>
+                        <option value="Room cleaning">Room Cleaning</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Misc">Misc</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="block">Block</label>
+                        <input type="text" maxlength="1" class="form-control" id="block"  placeholder="block">
+                    </div>
+                    <div class="form-group">
+                        <label for="roomNo">Room No.</label>
+                        <input type="number" class="form-control" id="roomNo"  placeholder="Enter Room No.">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                    </div>
+                    <div class="col text-center">
+                    <button type="button" class="btn btn-primary" id="postService">Add Request</button>
+
+                    </div>
+                </form> 
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+        </div>   
+    
+    </div>
+
+</section>
+    
+
+
+</body>
+</html>

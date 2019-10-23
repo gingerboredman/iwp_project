@@ -1,10 +1,23 @@
-const path = require('path')
 const express = require('express')
+require('./db/mongoose')
+const User = require('./models/user')
+const Service = require('./models/service')
+const userRouter = require('./routers/user')
+const serviceRouter = require('./routers/service')
+const orderRouter = require('./routers/order')
 const hbs = require('hbs')
+const path = require('path')
+
 
 const app = express()
+const port = process.env.PORT || 3000
 
-//paths for config
+app.use(express.json())
+app.use(userRouter)
+app.use(serviceRouter)
+app.use(orderRouter)
+
+
 const publidDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname,'../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
@@ -34,15 +47,16 @@ app.get('/home',(req,res) => {
     res.render('home')
 })
 
-app.get('/whome',(req,res) => {
-    res.render('whome')
+app.get('/complaints',(req,res) => {
+    res.render('complaints')
 })
 
 app.get('*', (req, res) => {
     res.render('404')
 })
 
-
-app.listen(3600, () => {
-    console.log('Server up on port 3600.')
+app.listen(port, () => {
+    console.log('Server up on port:', port)
 })
+
+
