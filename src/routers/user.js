@@ -5,7 +5,9 @@ const router = new express.Router()
 
 
 router.post('/users/register', async (req,res) => {
+    await User.init()
     const user = new User(req.body)
+    console.log(user)
     try {
         await user.save()
         const token = await user.generateAuthToken()  
@@ -31,6 +33,8 @@ router.post('/users/login', async (req, res) => {
         res.status(400).send(e)
     }
 })
+
+
 
 router.post('/users/logout', auth, async (req,res) => {
     try{

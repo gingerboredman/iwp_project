@@ -5,6 +5,7 @@ const Service = require('./models/service')
 const userRouter = require('./routers/user')
 const serviceRouter = require('./routers/service')
 const orderRouter = require('./routers/order')
+const adminRouter = require('./routers/admin')
 const hbs = require('hbs')
 const path = require('path')
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use(userRouter)
 app.use(serviceRouter)
 app.use(orderRouter)
+app.use(adminRouter)
 
 
 const publidDirectoryPath = path.join(__dirname, '../public')
@@ -51,9 +53,22 @@ app.get('/complaints',(req,res) => {
     res.render('complaints')
 })
 
+app.get('/ordersPage',(req,res) => {
+    res.render('ordersPage')
+})
+
+app.get('/adminLogin', (req, res) => {
+    res.render('adminLogin')
+})
+
+app.get('/adminHome', (req, res) => {
+    res.render('adminHome')
+})
+
 app.get('*', (req, res) => {
     res.render('404')
 })
+
 
 app.listen(port, () => {
     console.log('Server up on port:', port)

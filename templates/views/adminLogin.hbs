@@ -18,7 +18,7 @@
 
         async function login()
         {
-            const url = '/users/login'
+            const url = '/admin/login'
             const email = document.getElementById('inputEmail').value
             const password = document.getElementById('inputPassword').value
 
@@ -35,7 +35,7 @@
             if(response.ok){
                 const json =  await response.json();
                 sessionStorage.setItem("token", json['token']);
-                window.location.pathname = "/home"
+                window.location.pathname = "/adminHome"
             } else{
                 throw Error
             }

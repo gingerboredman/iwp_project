@@ -1,8 +1,8 @@
 
 
-async function markService(){
+async function markOrder(){
     console.log('selected')
-const url = '/services/' + this.name
+const url = '/orders/' + this.name
     const token = sessionStorage.getItem('token')
     const data = {completed: true}
         const response = await fetch(url, {
@@ -14,14 +14,14 @@ const url = '/services/' + this.name
         }
     });
     if(response.ok){
-        getServices()}
+        getOrders()}
     
 
 }
 
 
-async function delService(){
-const url = '/services/' + this.name
+async function delOrder(){
+const url = '/orders/' + this.name
     const token = sessionStorage.getItem('token')
         const response = await fetch(url, {
         method: 'DELETE', // or '
@@ -31,27 +31,22 @@ const url = '/services/' + this.name
         }
     });
     if(response.ok){
-        getServices()}
+        getOrders()}
     
 
 }
 
-async function postService() {
+async function postOrder() {
     console.log('runnung')
-const url = '/services'
+const url = '/orders'
     const token = sessionStorage.getItem('token')
-    const serviceType = document.getElementById('type').value
-    const block = document.getElementById('block').value
-    const roomNo = document.getElementById('roomNo').value
-    const description = document.getElementById('description').value
+    const item = document.getElementById('type').value
+    const quantity = document.getElementById('quantity').value
     
     var data = {}
-    data = {serviceType,
-                    roomNo,
-                    block,
-                    description}
+    data = {item, quantity}
 
-    console.log(data.serviceType)
+    // console.log(data.serviceType)
         const response = await fetch(url, {
         method: 'POST', // or '
         body: JSON.stringify(data),
@@ -66,8 +61,8 @@ const url = '/services'
 
 
 
-async function getServices(){
-    const url = '/services'
+async function getOrders(){
+    const url = '/orders'
     const token = sessionStorage.getItem('token')
     
         const response = await fetch(url, {
@@ -80,14 +75,14 @@ async function getServices(){
     if(response.ok){
         const json = await response.json()
 
-        var e = document.getElementById('complaintsBody') 
+        var e = document.getElementById('ordersBody') 
 
         var child = e.lastElementChild;  
         while (child) { 
             e.removeChild(child); 
             child = e.lastElementChild; 
         } 
-        
+            var j = 1
             for(i = json.length - 1; i>=0; --i)
             {
                 if(json[i]['completed'] === false)
@@ -154,28 +149,29 @@ async function getServices(){
                 newItem.appendChild(th4)
 
 
-                document.getElementById('complaintsBody').appendChild(newItem)
+                document.getElementById('ordersBody').appendChild(newItem)
 
                 document.getElementById('completedButton')
-                document.getElementById((tag+'-'+0)).innerHTML = json.length - i
+                document.getElementById((tag+'-'+0)).innerHTML = j
                 document.getElementById((tag+'-'+0)).style.fontWeight = "bold"
 
-                document.getElementById((tag+'-'+1)).innerHTML = json[i]['serviceType']
-                document.getElementById((tag+'-'+2)).innerHTML = json[i]['description']
+                document.getElementById((tag+'-'+1)).innerHTML = json[i]['item']
+                document.getElementById((tag+'-'+2)).innerHTML = json[i]['quantity']
 
                 if(json[i]['completed'] === false){
                     document.getElementById((tag+'-'+3)).innerHTML = 'Pending'
                 }else{
                     document.getElementById((tag+'-'+3)).innerHTML = 'Completed'
                 }
-            }}
+            }
+        j+=1}
         try{
                         // console.log('here')
 
         completed = document.getElementsByClassName('completedButton')
         console.log(completed.length)
         for (var i = 0; i < completed.length; i++) {
-            completed[i].addEventListener('click', function() {markService.bind(this)();}, false);
+            completed[i].addEventListener('click', function() {markOrder.bind(this)();}, false);
             // console.log('here')
         }    
         
@@ -184,7 +180,7 @@ async function getServices(){
         deleted =  document.getElementsByClassName('deleteButton')
         // console.log('here')
         for (var i = 0; i < deleted.length; i++) {
-            deleted[i].addEventListener('click', function() {delService.bind(this)();}, false);
+            deleted[i].addEventListener('click', function() {delOrder.bind(this)();}, false);
             // console.log('here')
         }       
 
@@ -192,7 +188,7 @@ async function getServices(){
 
         }
         
-        document.getElementById('postService').addEventListener('click', () => postService())
+        document.getElementById('postOrder').addEventListener('click', () => postOrder())
     }
     else if (response.status = 401){
                 window.location.pathname = "/signin"
@@ -204,7 +200,7 @@ async function getServices(){
 
 
 
-window.addEventListener('load', () => getServices())
+window.addEventListener('load', () => getOrders())
 
 
 
