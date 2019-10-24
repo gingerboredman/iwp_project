@@ -4,7 +4,7 @@ async function markService(){
     console.log('selected')
 const url = '/services/' + this.name
     const token = sessionStorage.getItem('token')
-    const data = {completed: true}
+    const data = {completed: 1}
         const response = await fetch(url, {
         method: 'PATCH', // or '
         body: JSON.stringify(data),
@@ -79,7 +79,7 @@ async function getServices(){
     });
     if(response.ok){
         const json = await response.json()
-
+        console.log(json)
         var e = document.getElementById('complaintsBody') 
 
         var child = e.lastElementChild;  
@@ -90,7 +90,7 @@ async function getServices(){
         
             for(i = json.length - 1; i>=0; --i)
             {
-                if(json[i]['completed'] === false)
+                if(json[i]['completed'] === 0 || json[i]['completed'] === 1)
                 {
                 tag = 'c'+i
                 newItem = document.createElement("TR")
@@ -109,7 +109,7 @@ async function getServices(){
 
                 
                 
-                if(json[i]['completed'] === false)
+                if(json[i]['completed'] === 0 || json[i]['completed'] === 1)
                 {
                     markComplete = document.createElement('button')
                     // markComplete.setAttribute('class','')
@@ -163,9 +163,11 @@ async function getServices(){
                 document.getElementById((tag+'-'+1)).innerHTML = json[i]['serviceType']
                 document.getElementById((tag+'-'+2)).innerHTML = json[i]['description']
 
-                if(json[i]['completed'] === false){
+                if(json[i]['completed'] === 0){
                     document.getElementById((tag+'-'+3)).innerHTML = 'Pending'
-                }else{
+                }else if(json[i]['completed'] === 1) {
+                    document.getElementById((tag+'-'+3)).innerHTML = 'In Progress'
+                } else{
                     document.getElementById((tag+'-'+3)).innerHTML = 'Completed'
                 }
             }}

@@ -96,6 +96,38 @@ router.patch('/services/:id', auth, async (req,res) => {
     }
 })
 
+router.patch('/servicesAdm/:id', adminAuth, async (req,res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['completed']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if(!isValidOperation){
+        res.status(400).send({error:'Invalid updates!'})
+    }
+
+    try{
+        const service = await Service.findOne({_id:req.params.id})
+        // // console.log(req.params.id)
+        // const service = await Service.findById(req.params.id)
+
+        
+        // // const service = await Service.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true})
+
+        if(!service){
+            return res.status(404).send()
+        }
+
+        updates.forEach((update) => service[update] = req.body[update])
+        
+        await service.save()
+
+        res.send(service)
+    } catch(e){
+        // console.log(e)
+        res.status(400).send(e)
+    }
+})
+
 router.delete('/services/:id', auth, async (req,res) => {
     try{
         const service = await Service.findOneAndDelete({_id:req.params.id, owner: req.user._id})

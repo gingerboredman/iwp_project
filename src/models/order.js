@@ -11,9 +11,14 @@ const Order = mongoose.model('Order',{
         required: true
     },
     completed:{
-        type:Boolean,
+        type: Number,
         required: true,
-        default:false
+        default:0,
+        validate(value){
+            if(value<0 || value>3){
+                throw new Error()
+            }
+        }
     },
 
     owner: {

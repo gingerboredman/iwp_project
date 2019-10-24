@@ -65,6 +65,14 @@ app.get('/adminHome', (req, res) => {
     res.render('adminHome')
 })
 
+app.get('/adminOrders', (req, res) => {
+    res.render('adminOrders')
+})
+
+app.get('/adminComplaints', (req, res) => {
+    res.render('adminComplaints')
+})
+
 app.get('*', (req, res) => {
     res.render('404')
 })

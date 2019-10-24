@@ -51,7 +51,7 @@ async function getOrders(){
                 newItem.setAttribute("class", "list-group-item")
                 newItem.setAttribute("id", tag)
                 document.getElementById('ordersList').appendChild(newItem)
-                document.getElementById(tag).innerHTML = '<strong>' + json[i]['item'] + ': </strong>' +json[i]['Quantity']
+                document.getElementById(tag).innerHTML = '<strong>' + json[i]['item'] + ': </strong>' +json[i]['quantity']
             }
         
     }

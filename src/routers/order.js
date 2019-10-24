@@ -86,9 +86,52 @@ router.patch('/orders/:id', auth, async (req,res) => {
 
 })
 
+router.patch('/ordersAdm/:id', adminAuth, async (req,res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['completed']
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+    if(!isValidOperation){
+        res.status(400).send({error:'Invalid updates!'})
+    }
+
+    try{
+        const order = await Order.findOne({_id:req.params.id})
+       
+
+        if(!order){
+            return res.status(404).send()
+        }
+
+        updates.forEach((update) => order[update] = req.body[update])
+        
+        await order.save()
+
+        res.send(order)
+    } catch(e){
+        // console.log(e)
+        res.status(400).send(e)
+    }
+
+})
+
 router.delete('/orders/:id', auth, async (req,res) => {
     try{
         const order = await Order.findOneAndDelete({_id:req.params.id, owner: req.user._id})
+        if(!order){
+            return res.status(404).send()
+        }
+
+        res.send(order)
+    }catch(e){
+        res.status(500).send()
+    }
+})
+
+
+router.delete('/ordersAdm/:id', adminAuth, async (req,res) => {
+    try{
+        const order = await Order.findOneAndDelete({_id:req.params.id})
         if(!order){
             return res.status(404).send()
         }
