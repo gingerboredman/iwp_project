@@ -69,6 +69,10 @@ const url = '/services'
 async function getServices(){
     const url = '/services'
     const token = sessionStorage.getItem('token')
+
+    if(token){
+        window.location.pathname = "/signin"
+    }
     
         const response = await fetch(url, {
         method: 'GET', // or '

@@ -19,19 +19,19 @@ router.post('/admin/login', async (req, res) => {
     }
 })
 
-// router.post('/admin/register', async (req,res) => {
-//     await Admin.init()
-//     const user = new Admin(req.body)
-//     console.log(user)
-//     try {
-//         await user.save()
-//         const token = await user.generateAuthToken()  
-//         res.status(201).send({user, token})
-//     } catch(e){
-//         res.status(400).send(e)
-//     }
+router.post('/admin/register', async (req,res) => {
+    await Admin.init()
+    const user = new Admin(req.body)
+    console.log(user)
+    try {
+        await user.save()
+        const token = await user.generateAuthToken()  
+        res.status(201).send({user, token})
+    } catch(e){
+        res.status(400).send(e)
+    }
 
-// })
+})
 
 router.post('/admin/logout', adminAuth, async (req,res) => {
     try{

@@ -10,6 +10,17 @@ const hbs = require('hbs')
 const path = require('path')
 
 
+const AssistantV2 = require('ibm-watson/assistant/v2');
+            const { IamAuthenticator } = require('ibm-watson/auth');
+
+            const service = new AssistantV2({
+            version: '2019-02-28',
+            authenticator: new IamAuthenticator({
+                apikey: '1VqbLRcChDmmzx6qyfOmpecfYSy5Ho2k6gfNflrhR0Rh',
+            }),
+            url: 'https://gateway-lon.watsonplatform.net/assistant/api',
+            });
+
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -73,9 +84,19 @@ app.get('/adminComplaints', (req, res) => {
     res.render('adminComplaints')
 })
 
+
+app.get('/experimental', (req,res) => {
+    res.render('experimental')
+}) 
+
+app.post('/chatbot', (req,res) => {
+    console.log(req)
+})
+
 app.get('*', (req, res) => {
     res.render('404')
 })
+
 
 
 app.listen(port, () => {

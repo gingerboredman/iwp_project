@@ -4,12 +4,69 @@ const auth = require('../middleware/auth')
 const router = new express.Router()
 
 
+router.post('/user/chatbot', auth,  async (req,res) => {
+    const AssistantV2 = require('ibm-watson/assistant/v2');
+            const { IamAuthenticator } = require('ibm-watson/auth');
+
+            const service = new AssistantV2({
+            version: '2019-02-28',
+            authenticator: new IamAuthenticator({
+                apikey: '1VqbLRcChDmmzx6qyfOmpecfYSy5Ho2k6gfNflrhR0Rh',
+            }),
+            url: 'https://gateway-lon.watsonplatform.net/assistant/api',
+            });
+
+    const q = req.body.q;
+    var op ;
+
+    service.createSession({
+        assistantId: '2988d392-847b-4da4-bf48-e8da31ea669d'
+      })
+        .then(resp => {
+          var id = resp['result']['session_id'];
+          
+          service.message({
+            assistantId: '2988d392-847b-4da4-bf48-e8da31ea669d',
+            sessionId: id,
+            input: {
+              'message_type': 'text',
+              'text': q
+              }
+            })
+            .then(resp => {
+                // console.log(JSON.stringify(resp))
+                if(resp['result']['output']['intents'].length >0){
+              return res.status(200).send(resp['result']['output']['intents'][0]);}
+              else{
+                return res.status(200).send({"result": {"output":{'intents':['not_def']}}});
+              }
+            })
+            .catch(err => {
+              console.log(err);resolve
+            });
+    
+
+
+
+
+          
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    )
+  
+    
+  
+
 router.post('/users/register', async (req,res) => {
     await User.init()
     const user = new User(req.body)
     console.log(user)
     try {
         await user.save()
+        console.log('sada')
         const token = await user.generateAuthToken()  
         res.status(201).send({user, token})
     } catch(e){

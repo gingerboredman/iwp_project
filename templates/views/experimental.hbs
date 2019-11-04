@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto&display=swap" rel="stylesheet">
+    <style>
+        .list-group{
+    max-height: 150px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+    </style>
+
+
+    <link rel="stylesheet" media="all" href="../styles/setup.css">
+    <link rel="stylesheet" media="all" href="../styles/says.css">
+    <link rel="stylesheet" media="all" href="../styles/reply.css">
+    <link rel="stylesheet" media="all" href="../styles/typing.css">
+    <link rel="stylesheet" media="all" href="../styles/input.css">
+
+
+    <script src="/js/signOut.js"></script>
+    <script>
+
+        async function query(){
+            const q = document.getElementById('q').value;
+                const token = sessionStorage.getItem('token')
+
+           
+                console.log('runnung')
+            const url = '/user/chatbot'
+                
+                
+                var data = {}
+                data = {q}
+
+                // console.log(data.serviceType)
+                    const response = await fetch(url, {
+                    method: 'POST', // or '
+                    body: JSON.stringify(data),
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+token
+                    }
+                });
+                if(response.ok){
+                    console.log('idhar')
+                    const json = await response.json()
+                    if(json['intent'] == 'about'){
+                        document.getElementById('reply').innerHTML = "Hey, Im an experimental chatbot assistant for FIXvit"
+                    } else if(json['intent'] == 'about_creators'){
+                        document.getElementById('reply').innerHTML = "I was created by Vishwa, Akshit and Aditya for their IWP project"
+                    }else if(json['intent'] == 'last_order'){
+
+
+                        const url = '/orders'
+                        const token = sessionStorage.getItem('token')
+                        const response2 = await fetch(url, {
+                            method: 'GET', // or '
+                            headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+token
+                            }
+                        });
+                        if(response2.ok){
+                            const json2 = await response2.json()
+                            console.log(json2)
+                            op = json2.pop()
+                            quantity = op['quantity']
+                            item = op['item']
+                            document.getElementById('reply').innerHTML = `You last ordered ${quantity} ${item}.`
+                            }
+                    }else if(json['intent'] == 'get_last_service'){
+
+                        const url = '/services'
+                        const token = sessionStorage.getItem('token')
+                        const response2 = await fetch(url, {
+                            method: 'GET', // or '
+                            headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer '+token
+                            }
+                        });
+                        if(response2.ok){
+                            const json2 = await response2.json()
+                            console.log(json2)
+                            op = json2.pop()
+                            serviceType = op['serviceType']
+                            description = op['description']
+                            document.getElementById('reply').innerHTML = `You last service request was of type ${serviceType}  which you described as "${description}."`
+                            }
+                    } else{
+                        document.getElementById('reply').innerHTML = "Im sorry, im still under development and am not smart enough to answer that..."
+                    }
+                    console.log(json)
+                }
+
+            
+        }
+
+        function main(){
+            document.getElementById('go').addEventListener('click', () => query())
+        }
+
+        window.addEventListener('load', () => main())
+
+    </script>
+</head>
+<body>
+    {{>login_nav}}
+
+    <section class="mt-auto">
+        <div class="container-fluid justify-content-center">
+            <div class="row justify-content-center" style="margin-top: 19vh; margin-bottom:15vh;">
+                <div class="col-4">
+                    <div class="card " style="width: 25rem; margin-left:3vh;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                        <img src="/img/m.png" class="card-img-top" alt="..." style="height: 200px;width:200px; margin-top: 2rem;margin-left:6rem">
+                        <div class="card-body">
+                            <hr>
+                            <centre>
+                            <h2 class="card-title" style="align-content: center;">Hey There!</h1>
+                            <p class="card-text"></p>
+                            </centre>
+                            <input type="text" placeholder="Ask me a question..." id="q">
+                            <button type="button" class="btn btn-primary" id ="go">Go!</button>
+                            {{!-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8">
+                    <div class="card " style="width: 70rem; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);margin-top:10rem;">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <div class="panel panel-primary" id="reply">
+                                    Nothing to show yet...
+                                </div>
+                            </p>
+                            
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+            
+        </div>
+          </section>
+    
+    
+</body>
+</html>

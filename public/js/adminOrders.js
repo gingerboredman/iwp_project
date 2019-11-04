@@ -28,6 +28,9 @@ const url = '/ordersAdm/' + this.name
 async function getOrders(){
     const url = '/ordersAdm'
     const token = sessionStorage.getItem('token')
+    if(sessionStorage.getItem('token') === null){
+        window.location.pathname = "/signin"
+    }
     
         const response = await fetch(url, {
         method: 'GET', // or '
@@ -38,7 +41,7 @@ async function getOrders(){
     });
     if(response.ok){
         const json = await response.json()
-
+        console.log(json)
         var e = document.getElementById('ordersBody') 
 
         var child = e.lastElementChild;  

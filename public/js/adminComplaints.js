@@ -22,6 +22,9 @@ const url = '/servicesAdm/' + this.name
 
 
 async function getServices(){
+    if(sessionStorage.getItem('token') === null){
+        window.location.pathname = "/signin"
+    }
     const url = '/servicesAdm'
     const token = sessionStorage.getItem('token')
     
@@ -42,6 +45,8 @@ async function getServices(){
             e.removeChild(child); 
             child = e.lastElementChild; 
         } 
+
+        console.log(json)
         
             for(i = json.length - 1; i>=0; --i)
             {
@@ -54,13 +59,15 @@ async function getServices(){
                 th2 = document.createElement('TD')
                 th3 = document.createElement('TD')
                 th4 = document.createElement('TD')
-
+                th5 = document.createElement('TD')
+                
                 newItem.setAttribute("id", tag)
                 no.setAttribute("id", (tag+'-'+0))
                 th1.setAttribute("id", (tag+'-'+1))
                 th2.setAttribute("id", (tag+'-'+2))
                 th3.setAttribute("id", (tag+'-'+3))
                 th4.setAttribute("id", (tag+'-'+4))
+                th5.setAttribute("id", (tag+'-'+5))
 
                 
                 
@@ -93,9 +100,10 @@ async function getServices(){
                 newItem.appendChild(th1)
                 newItem.appendChild(th2)
                 newItem.appendChild(th3)
+                newItem.appendChild(th5)
                 newItem.appendChild(th4)
                 
-                newItem.appendChild(th4)
+                // newItem.appendChild(th4)
 
 
                 document.getElementById('complaintsBody').appendChild(newItem)
@@ -103,7 +111,7 @@ async function getServices(){
                 document.getElementById('completedButton')
                 document.getElementById((tag+'-'+0)).innerHTML = json.length - i
                 document.getElementById((tag+'-'+0)).style.fontWeight = "bold"
-
+                document.getElementById((tag+'-'+5)).innerHTML = json[i]['roomNo']
                 document.getElementById((tag+'-'+1)).innerHTML = json[i]['serviceType']
                 document.getElementById((tag+'-'+2)).innerHTML = json[i]['description']
 

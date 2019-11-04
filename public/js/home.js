@@ -60,6 +60,10 @@ async function getOrders(){
     }
 
 async function getInfo(){
+    console.log(sessionStorage.getItem('token'))
+    if(sessionStorage.getItem('token') === null){
+        window.location.pathname = "/signin"
+    }
     getOrders()
     getServices()
     
