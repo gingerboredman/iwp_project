@@ -70,7 +70,7 @@ async function getServices(){
     const url = '/services'
     const token = sessionStorage.getItem('token')
 
-    if(token){
+    if(token === null){
         window.location.pathname = "/signin"
     }
     

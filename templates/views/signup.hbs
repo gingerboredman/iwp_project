@@ -51,6 +51,8 @@
                     const json = await response.json();
                     
                     sessionStorage.setItem("token", json['token']);
+                    window.location.pathname = "/home"
+
 
                 }else{
                     throw Error('Status not OK')

@@ -67,7 +67,7 @@ async function getOrders(){
     const token = sessionStorage.getItem('token')
 
     
-    if(token){
+    if(token === null){
         window.location.pathname = "/signin"
     }
         const response = await fetch(url, {

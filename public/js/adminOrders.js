@@ -100,7 +100,6 @@ async function getOrders(){
                 newItem.appendChild(th3)
                 newItem.appendChild(th4)
                 
-                newItem.appendChild(th4)
 
 
                 document.getElementById('ordersBody').appendChild(newItem)
